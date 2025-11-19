@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CategoryStructure } from '../types';
 import { PhoneticSymbol } from './PhoneticSymbol';
@@ -10,17 +11,17 @@ interface CategoryDisplayProps {
 
 export const CategoryDisplay: React.FC<CategoryDisplayProps> = ({ category, categoryKey }) => {
   return (
-    <div className="flex items-baseline mb-3">
-      <span className="w-32 text-lg text-gray-700 shrink-0">
+    <div className="flex items-center mb-2 p-1.5">
+      <span className="w-24 text-sm font-black text-black shrink-0 uppercase tracking-tight pl-1">
         {category.name}
       </span>
-      <div className="flex items-baseline text-xl text-gray-800">
-        <span className="text-gray-600 select-none">/</span>
-        <div className="flex flex-wrap items-baseline space-x-1 mx-1">
+      <div className="flex items-center text-lg text-black font-bold">
+        <span className="text-black font-black select-none mx-1.5 text-sm">/</span>
+        <div className="flex flex-wrap items-center gap-1 mx-0.5">
           {category.symbols.map((symbolChar, symbolIndex) => {
             const symbolData = findSymbolData(symbolChar);
             const symbolKey = `${categoryKey}-${symbolChar}-${symbolIndex}`;
-            
+
             return (
               <PhoneticSymbol
                 key={symbolKey}
@@ -30,7 +31,7 @@ export const CategoryDisplay: React.FC<CategoryDisplayProps> = ({ category, cate
             );
           })}
         </div>
-        <span className="text-gray-600 select-none">/</span>
+        <span className="text-black font-black select-none mx-1.5 text-sm">/</span>
       </div>
     </div>
   );

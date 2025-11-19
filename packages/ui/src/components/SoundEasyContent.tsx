@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
 import { AudioStatusIndicator } from './AudioStatusIndicator';
 import { CategoryDisplay } from './CategoryDisplay';
+import { PracticeMode } from './PracticeMode';
+import { StatsModal } from './StatsModal';
+import { ReadAlongSettings } from './ReadAlongSettings';
 import { imageStructure } from '../constants/phonetic-structure';
+import { Play, Square, Target, BarChart2, Volume2 } from 'lucide-react';
 
 export const SoundEasyContent: React.FC = () => {
   const {
@@ -13,55 +17,140 @@ export const SoundEasyContent: React.FC = () => {
     audioLoadStatus
   } = useAudioPlayer();
 
+  const [showPracticeMode, setShowPracticeMode] = useState(false);
+  const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showReadAlongSettings, setShowReadAlongSettings] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [isLoop, setIsLoop] = useState(false);
+  const [loopCount, setLoopCount] = useState(3);
+
   // Calculate loading progress
   const totalSymbols = Object.keys(audioLoadStatus).length;
   const loadedSymbols = Object.values(audioLoadStatus).filter(status => status === 'loaded').length;
   const loadingProgress = totalSymbols > 0 ? Math.floor((loadedSymbols / totalSymbols) * 100) : 0;
 
   return (
-    <div className="p-6 sm:p-8 bg-white font-sans max-w-3xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <button
-          onClick={() => isLearningMode ? stopLearningMode() : startLearningMode()}
-          className={`px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors duration-200
-                    ${isLoadingAll ? 'opacity-50 cursor-not-allowed' : ''}`}
-          disabled={isLoadingAll}
-        >
-          {isLearningMode ? "停止学习模式" : "开始学习模式"}
-        </button>
+    <div className="p-4 sm:p-6 bg-[#FFFDF5] font-sans max-w-5xl mx-auto min-h-screen border-x-4 border-black shadow-[8px_0px_0px_0px_rgba(0,0,0,0.2)]">
+      <div className="flex justify-between items-center mb-4 gap-3 bg-[#FFDE00] border-4 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="flex flex-wrap items-center gap-2">
+          <div
+            className="relative"
+            onMouseEnter={() => !isLearningMode && setShowReadAlongSettings(true)}
+            onMouseLeave={() => setShowReadAlongSettings(false)}
+          >
+            <button
+              onClick={() => isLearningMode ? stopLearningMode() : startLearningMode()}
+              className={`flex items-center gap-2 px-3 py-1.5 bg-[#4ECDC4] text-black border-2 border-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all text-sm
+                        ${isLoadingAll ? 'opacity-50 cursor-not-allowed' : ''}`}
+              disabled={isLoadingAll}
+            >
+              {isLearningMode ? <Square size={16} fill="black" /> : <Play size={16} fill="black" />}
+              {isLearningMode ? "停止跟读" : "跟读模式"}
+            </button>
+
+            {showReadAlongSettings && !isLearningMode && (
+              <div
+                onMouseEnter={() => setShowReadAlongSettings(true)}
+                onMouseLeave={() => setShowReadAlongSettings(false)}
+                className="absolute top-full left-0 mt-1 z-10"
+              >
+                <ReadAlongSettings
+                  playbackSpeed={playbackSpeed}
+                  isLoop={isLoop}
+                  loopCount={loopCount}
+                  onSpeedChange={setPlaybackSpeed}
+                  onLoopChange={setIsLoop}
+                  onLoopCountChange={setLoopCount}
+                />
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => setShowPracticeMode(true)}
+            className="flex items-center gap-2 px-3 py-1.5 bg-[#FF69B4] text-black border-2 border-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all text-sm"
+          >
+            <Target size={16} />
+            练习模式
+          </button>
+
+          <button
+            onClick={() => setShowStatsModal(true)}
+            className="flex items-center gap-2 px-3 py-1.5 bg-white text-black border-2 border-black font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all text-sm"
+          >
+            <BarChart2 size={16} />
+            学习统计
+          </button>
+        </div>
 
         {isLoadingAll && (
-          <div className="flex items-center">
-            <div className="w-48 bg-gray-200 rounded-full h-2.5 mr-2">
+          <div className="flex items-center bg-white px-2 py-1 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+            <div className="w-24 bg-gray-200 border-2 border-black h-3 mr-2 relative overflow-hidden">
               <div
-                className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                className="bg-[#FF69B4] h-full transition-all duration-300"
                 style={{ width: `${loadingProgress}%` }}
               ></div>
             </div>
-            <span className="text-sm text-gray-500">加载中 {loadingProgress}%</span>
+            <span className="text-xs font-bold text-black">{loadingProgress}%</span>
           </div>
         )}
       </div>
 
-      <div className={"flex flex-row justify-between"}>
-        <div>
+      <div className={"flex flex-row justify-between items-start gap-4"}>
+        <div className="flex-1">
           {imageStructure.map((section, sectionIndex) => (
-            <div key={sectionIndex} className="mb-4">
-              <h2 className={section.titleClass}>{section.title}</h2>
-              {section.categories.map((category, categoryIndex) => {
-                const categoryKey = `${section.title}-${category.name}-${categoryIndex}`;
-                return (
-                  <CategoryDisplay
-                    key={categoryKey}
-                    category={category}
-                    categoryKey={categoryKey}
-                  />
-                );
-              })}
+            <div key={sectionIndex} className="mb-6">
+              <h2 className={`${section.titleClass} text-xl font-black uppercase mb-2 text-black drop-shadow-[1px_1px_0px_rgba(255,255,255,1)] flex items-center gap-2`}>
+                <div className="w-3 h-3 bg-black"></div>
+                {section.title}
+              </h2>
+              <div className="space-y-2">
+                {section.categories.map((category, categoryIndex) => {
+                  const categoryKey = `${section.title}-${category.name}-${categoryIndex}`;
+                  return (
+                    <CategoryDisplay
+                      key={categoryKey}
+                      category={category}
+                      categoryKey={categoryKey}
+                    />
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>
-        <img className={"h-[300px]"} src="/Phonogram.png" alt=""/>
+        <div className="sticky top-4 bg-white border-4 border-black p-2 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rotate-1 hover:rotate-0 transition-transform duration-300 w-[280px]">
+          <img className={"w-full object-contain bg-white"} src="/Phonogram.png" alt="Phonogram Chart" />
+          <div className="text-center font-bold mt-2 border-t-2 border-black pt-1 text-sm">IPA CHART</div>
+        </div>
+      </div>
+
+      {/* Practice Mode Modal */}
+      {showPracticeMode && (
+        <PracticeMode onClose={() => setShowPracticeMode(false)} />
+      )}
+
+      {/* Stats Modal */}
+      {showStatsModal && (
+        <StatsModal onClose={() => setShowStatsModal(false)} />
+      )}
+
+      {/* Audio Source Attribution */}
+      <div className="mt-8 pt-4 border-t-4 border-black text-center">
+        <div className="inline-block bg-white border-2 border-black px-3 py-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-bold text-black flex items-center gap-1">
+            <Volume2 size={12} />
+            音频资源: {' '}
+            <a
+              href="https://www.youtube.com/@yingyutu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#FF69B4] hover:text-[#4ECDC4] underline decoration-2 decoration-black ml-1"
+            >
+              @yingyutu
+            </a>
+          </p>
+        </div>
       </div>
 
       <AudioStatusIndicator />

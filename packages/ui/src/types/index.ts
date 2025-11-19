@@ -46,3 +46,44 @@ export interface AudioPlayerContextType {
 export interface AudioPlayerProviderProps {
   children: React.ReactNode;
 }
+
+// Types for practice mode
+export type DifficultyLevel = 'easy' | 'medium' | 'hard';
+
+export interface PracticeQuestion {
+  correctSymbol: string;
+  options: string[];
+  category: string;
+}
+
+export interface PracticeStats {
+  totalQuestions: number;
+  correctAnswers: number;
+  currentStreak: number;
+  bestStreak: number;
+}
+
+export interface PracticeModeContextType {
+  isPracticeMode: boolean;
+  difficulty: DifficultyLevel;
+  currentQuestion: PracticeQuestion | null;
+  stats: PracticeStats;
+  answerState: 'waiting' | 'correct' | 'wrong';
+  selectedAnswer: string | null;
+  startPractice: (difficulty: DifficultyLevel) => void;
+  stopPractice: () => void;
+  submitAnswer: (answer: string) => void;
+  nextQuestion: () => void;
+  playQuestionAudio: () => void;
+  historicalStats: HistoricalStats;
+  resetHistoricalStats: () => void;
+}
+
+// Historical statistics stored in localStorage
+export interface HistoricalStats {
+  totalQuestions: number;
+  totalCorrect: number;
+  allTimeBestStreak: number;
+  practiceCount: number; // Number of practice sessions
+  lastPracticeDate: string | null;
+}

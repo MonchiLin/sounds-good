@@ -28,23 +28,27 @@ export const PhoneticSymbol: React.FC<PhoneticSymbolProps> = ({ symbol, audioFil
     if (isLearningMode) {
       stopLearningMode();
     }
-    
+
     playAudio(symbol, audioFile);
   };
 
   // Build class names using Tailwind
-  const baseClasses = "phonetic-symbol px-1 relative rounded transition-all duration-300";
+  // Build class names using Tailwind
+  // Build class names using Tailwind
+  const baseClasses = "phonetic-symbol px-4 py-2 min-w-[3rem] text-center relative rounded-md border font-bold transition-all duration-200 text-base sm:text-lg select-none";
   const cursorClasses = audioFile && loadStatus === 'loading' ? 'cursor-wait' : 'cursor-pointer';
-  const stateClasses = isActive 
-    ? 'bg-blue-500 text-white transform scale-110' 
-    : isLoadingThis && audioFile 
-      ? 'bg-gray-400 text-white animate-pulse'
+
+  // Neobrutalism State Styles (Softened)
+  const stateClasses = isActive
+    ? 'bg-[#FF69B4] border-black text-black shadow-none translate-x-[1px] translate-y-[1px]' // Active: Pink, pressed look
+    : isLoadingThis && audioFile
+      ? 'bg-gray-100 border-gray-200 text-gray-400 animate-pulse'
       : audioFile && loadStatus === 'loading'
-        ? 'bg-gray-200 text-gray-400 animate-pulse'
+        ? 'bg-gray-50 border-gray-200 text-gray-300'
         : audioFile && loadStatus === 'error'
-          ? 'bg-red-100 text-red-500'
-          : 'hover:bg-gray-200';
-  
+          ? 'bg-red-50 border-red-200 text-red-500'
+          : 'bg-white border-gray-300 text-gray-800 hover:border-black hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-[1px] hover:-translate-x-[1px] hover:bg-[#FFFDF5]'; // Default: Clean, Pop on Hover
+
   const symbolClass = `${baseClasses} ${stateClasses} ${cursorClasses}`;
   const ariaDisabled = !!(audioFile && loadStatus === 'loading');
 
