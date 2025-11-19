@@ -1,43 +1,55 @@
-import { Button } from "@repo/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/card"
-
 function App() {
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">共享 UI 组件示例 - 浏览器扩展</h1>
-      
-      <section className="mb-8">
-        <h2 className="text-xl font-semibold mb-4">按钮组件</h2>
-        <div className="flex flex-col gap-4">
-          <div className="flex gap-2 flex-wrap">
-            <Button variant="default">默认按钮</Button>
-            <Button variant="destructive">危险按钮</Button>
-            <Button variant="outline">轮廓按钮</Button>
-          </div>
-          <div className="flex gap-2 flex-wrap">
-            <Button variant="secondary">次要按钮</Button>
-            <Button variant="ghost">幽灵按钮</Button>
-            <Button variant="link">链接按钮</Button>
+    <div className="p-6 max-w-2xl mx-auto">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">音标学习扩展</h1>
+        <p className="text-gray-600">浏览器扩展选项页面</p>
+      </div>
+
+      <div className="space-y-6">
+        <div className="bg-white rounded-lg border p-6">
+          <h2 className="text-xl font-semibold mb-4">关于扩展</h2>
+          <p className="text-gray-600 mb-4">
+            这是一个基于 WXT 和 React 构建的浏览器扩展演示项目。
+          </p>
+          <div className="flex gap-2">
+            <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+              主要操作
+            </button>
+            <button className="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 transition-colors">
+              次要操作
+            </button>
           </div>
         </div>
-      </section>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">卡片组件</h2>
-        <Card>
-          <CardHeader>
-            <CardTitle>卡片标题</CardTitle>
-            <CardDescription>这是一个卡片描述，展示了共享 UI 组件的使用方式</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>这是卡片的内容区域。您可以在这里放置任何内容。</p>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline">取消</Button>
-            <Button>确认</Button>
-          </CardFooter>
-        </Card>
-      </section>
+        <div className="bg-white rounded-lg border p-6">
+          <h2 className="text-xl font-semibold mb-4">功能说明</h2>
+          <ul className="space-y-2 text-gray-600">
+            <li>• 基于 WXT 框架构建</li>
+            <li>• 使用 React 19 和 TypeScript</li>
+            <li>• 集成 Tailwind CSS 样式</li>
+            <li>• 支持热模块替换开发</li>
+          </ul>
+        </div>
+
+        <div className="bg-blue-50 rounded-lg border p-6">
+          <h2 className="text-xl font-semibold mb-4 text-blue-900">技术栈</h2>
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="text-blue-700">
+              <strong>前端框架:</strong> React 19
+            </div>
+            <div className="text-blue-700">
+              <strong>语言:</strong> TypeScript
+            </div>
+            <div className="text-blue-700">
+              <strong>构建工具:</strong> WXT + Vite
+            </div>
+            <div className="text-blue-700">
+              <strong>样式:</strong> Tailwind CSS
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,33 +1,34 @@
-import { Button } from "@/components/ui/button"
 import { useState } from "react"
-
-import reactLogo from "/react.svg"
-import wxtLogo from "/wxt.svg"
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div className="mb-2 flex items-center justify-center gap-4">
-        <a href="https://wxt.dev" target="_blank">
-          <img src={wxtLogo} className="size-10" alt="WXT logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="size-10" alt="React logo" />
-        </a>
+    <div className="w-80 p-4">
+      <div className="mb-4 text-center">
+        <h1 className="text-lg font-semibold text-blue-600">音标学习扩展</h1>
+        <p className="text-sm text-gray-600">Browser Extension Demo</p>
       </div>
-      <h1 className="text-center text-lg font-semibold">WXT + React</h1>
-      <div className="space-y-2 pt-2 text-center">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-        <p>Click on the WXT and React logos to learn more</p>
+
+      <div className="space-y-3">
+        <div className="text-center">
+          <button
+            onClick={() => setCount((count) => count + 1)}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+          >
+            计数: {count}
+          </button>
+        </div>
+
+        <div className="text-xs text-gray-500 text-center">
+          基于 WXT + React 构建
+        </div>
+
+        <div className="text-xs text-gray-400 text-center">
+          <p>编辑 popup/App.tsx 测试热更新</p>
+        </div>
       </div>
-    </>
+    </div>
   )
 }
 
