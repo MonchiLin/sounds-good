@@ -1,0 +1,80 @@
+import React from 'react';
+import * as Tooltip from '@radix-ui/react-tooltip';
+import { PHONETIC_EXAMPLES } from '../data/phonetic-examples';
+import { Volume2 } from 'lucide-react';
+
+interface PhoneticTooltipProps {
+    symbol: string;
+    children: React.ReactNode;
+}
+
+export const PhoneticTooltip: React.FC<PhoneticTooltipProps> = ({ symbol, children }) => {
+    // Try to match the symbol directly or with slashes (as defined in the data file)
+    const examples = PHONETIC_EXAMPLES[symbol] || PHONETIC_EXAMPLES[`/${symbol}/`];
+
+    if (!examples) {
+        return <>{children}</>;
+    }
+
+    const playWord = (word: string) => {
+        // Cancel any current speech
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.lang = 'en-US'; // Default to US English
+        utterance.rate = 0.8; // Slightly slower for clarity
+        window.speechSynthesis.speak(utterance);
+    };
+
+    return (
+        <Tooltip.Root>
+            <Tooltip.Trigger asChild>
+                {children}
+            </Tooltip.Trigger>
+            <Tooltip.Portal>
+                <Tooltip.Content
+                    className="z-50 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-3 rounded-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
+                    sideOffset={8}
+                >
+                    <div className="flex flex-col gap-1 min-w-[180px]">
+                        <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b-2 border-gray-100 pb-1 mb-1">
+                            Example Words
+                        </div>
+                        {examples.map((ex, idx) => (
+                            <button
+                                key={idx}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    playWord(ex.word);
+                                }}
+                                className="flex items-center justify-between p-2 hover:bg-[#FFFDF5] hover:text-[#FF69B4] rounded border-2 border-transparent hover:border-black hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all text-left group active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                            >
+                                <div className="flex flex-col leading-none gap-1">
+                                    <span className="font-bold text-sm">{ex.word}</span>
+                                    <span className="text-xs text-gray-400 font-mono group-hover:text-[#FF69B4]">
+                                        {(() => {
+                                            const parts = ex.ipa.split(symbol);
+                                            if (parts.length === 1) return ex.ipa;
+                                            return parts.map((part, i) => (
+                                                <React.Fragment key={i}>
+                                                    {part}
+                                                    {i < parts.length - 1 && (
+                                                        <span className="font-black text-black bg-[#FFDE00] px-[1px] rounded-[2px] mx-[0.5px] inline-block leading-none">{symbol}</span>
+                                                    )}
+                                                </React.Fragment>
+                                            ));
+                                        })()}
+                                    </span>
+                                </div>
+                                <div className="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 group-hover:bg-[#FF69B4] group-hover:text-white transition-colors">
+                                    <Volume2 size={12} />
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                    <Tooltip.Arrow className="fill-black" width={12} height={6} />
+                </Tooltip.Content>
+            </Tooltip.Portal>
+        </Tooltip.Root>
+    );
+};

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAudioPlayer } from '../hooks/useAudioPlayer';
+import { PhoneticTooltip } from './PhoneticTooltip';
 
 interface PhoneticSymbolProps {
   symbol: string;
@@ -53,23 +54,25 @@ export const PhoneticSymbol: React.FC<PhoneticSymbolProps> = ({ symbol, audioFil
   const ariaDisabled = !!(audioFile && loadStatus === 'loading');
 
   return (
-    <span
-      className={symbolClass}
-      onClick={handlePlay}
-      role="button"
-      tabIndex={ariaDisabled ? -1 : 0}
-      onKeyDown={(e) => {
-        if (!ariaDisabled && (e.key === 'Enter' || e.key === ' ')) {
-          e.preventDefault();
-          handlePlay();
-        }
-      }}
-      aria-label={`Play sound for phonetic symbol ${symbol}`}
-      aria-disabled={ariaDisabled}
-    >
-      {symbol}
-      {audioFile && loadStatus === 'loading' && <span className="text-xs ml-0.5">( L )</span>}
-      {audioFile && loadStatus === 'error' && <span className="text-xs ml-0.5">( ! )</span>}
-    </span>
+    <PhoneticTooltip symbol={symbol}>
+      <span
+        className={symbolClass}
+        onClick={handlePlay}
+        role="button"
+        tabIndex={ariaDisabled ? -1 : 0}
+        onKeyDown={(e) => {
+          if (!ariaDisabled && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            handlePlay();
+          }
+        }}
+        aria-label={`Play sound for phonetic symbol ${symbol}`}
+        aria-disabled={ariaDisabled}
+      >
+        {symbol}
+        {audioFile && loadStatus === 'loading' && <span className="text-xs ml-0.5">( L )</span>}
+        {audioFile && loadStatus === 'error' && <span className="text-xs ml-0.5">( ! )</span>}
+      </span>
+    </PhoneticTooltip>
   );
 };
