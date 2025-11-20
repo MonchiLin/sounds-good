@@ -19,7 +19,6 @@ export const SoundEasyContent: React.FC = () => {
 
   const [showPracticeMode, setShowPracticeMode] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
-  const [showReadAlongSettings, setShowReadAlongSettings] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const [isLoop, setIsLoop] = useState(false);
   const [loopCount, setLoopCount] = useState(3);
@@ -33,10 +32,14 @@ export const SoundEasyContent: React.FC = () => {
     <div className="p-4 sm:p-6 bg-[#FFFDF5] font-sans max-w-5xl mx-auto min-h-screen border-x-4 border-black shadow-[8px_0px_0px_0px_rgba(0,0,0,0.2)]">
       <div className="flex justify-between items-center mb-4 gap-3 bg-[#FFDE00] border-4 border-black p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex flex-wrap items-center gap-2">
-          <div
-            className="relative"
-            onMouseEnter={() => !isLearningMode && setShowReadAlongSettings(true)}
-            onMouseLeave={() => setShowReadAlongSettings(false)}
+          <ReadAlongSettings
+            playbackSpeed={playbackSpeed}
+            isLoop={isLoop}
+            loopCount={loopCount}
+            onSpeedChange={setPlaybackSpeed}
+            onLoopChange={setIsLoop}
+            onLoopCountChange={setLoopCount}
+            disabled={isLearningMode}
           >
             <button
               onClick={() => isLearningMode ? stopLearningMode() : startLearningMode()}
@@ -47,24 +50,7 @@ export const SoundEasyContent: React.FC = () => {
               {isLearningMode ? <Square size={16} fill="black" /> : <Play size={16} fill="black" />}
               {isLearningMode ? "停止跟读" : "跟读模式"}
             </button>
-
-            {showReadAlongSettings && !isLearningMode && (
-              <div
-                onMouseEnter={() => setShowReadAlongSettings(true)}
-                onMouseLeave={() => setShowReadAlongSettings(false)}
-                className="absolute top-full left-0 mt-1 z-10"
-              >
-                <ReadAlongSettings
-                  playbackSpeed={playbackSpeed}
-                  isLoop={isLoop}
-                  loopCount={loopCount}
-                  onSpeedChange={setPlaybackSpeed}
-                  onLoopChange={setIsLoop}
-                  onLoopCountChange={setLoopCount}
-                />
-              </div>
-            )}
-          </div>
+          </ReadAlongSettings>
 
           <button
             onClick={() => setShowPracticeMode(true)}

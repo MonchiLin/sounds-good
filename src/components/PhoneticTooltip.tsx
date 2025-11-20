@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { PHONETIC_EXAMPLES } from '../data/phonetic-examples';
+import { PHONETIC_CONTRASTS } from '../data/phonetic-contrasts';
 import { Volume2 } from 'lucide-react';
 
 interface PhoneticTooltipProps {
@@ -11,6 +12,7 @@ interface PhoneticTooltipProps {
 export const PhoneticTooltip: React.FC<PhoneticTooltipProps> = ({ symbol, children }) => {
     // Try to match the symbol directly or with slashes (as defined in the data file)
     const examples = PHONETIC_EXAMPLES[symbol] || PHONETIC_EXAMPLES[`/${symbol}/`];
+    const contrasts = PHONETIC_CONTRASTS[symbol] || PHONETIC_CONTRASTS[`/${symbol}/`];
 
     if (!examples) {
         return <>{children}</>;
@@ -71,6 +73,44 @@ export const PhoneticTooltip: React.FC<PhoneticTooltipProps> = ({ symbol, childr
                                 </div>
                             </button>
                         ))}
+
+                        {contrasts && contrasts.length > 0 && (
+                            <>
+                                <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest border-b-2 border-gray-100 pb-1 mb-1 mt-2">
+                                    Compare
+                                </div>
+                                {contrasts.map((contrast, idx) => (
+                                    <div key={idx} className="flex items-center justify-between gap-2 p-1.5 bg-gray-50 rounded border border-gray-100">
+                                        <div className="flex items-center gap-1 text-xs font-bold text-gray-500">
+                                            <span className="bg-[#FFDE00] text-black px-1 rounded">{symbol}</span>
+                                            <span>vs</span>
+                                            <span className="bg-white border border-gray-200 px-1 rounded">{contrast.otherSymbol}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    playWord(contrast.word1);
+                                                }}
+                                                className="text-xs font-bold hover:text-[#FF69B4] hover:underline decoration-2 underline-offset-2"
+                                            >
+                                                {contrast.word1}
+                                            </button>
+                                            <span className="text-gray-300">/</span>
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    playWord(contrast.word2);
+                                                }}
+                                                className="text-xs font-bold hover:text-[#FF69B4] hover:underline decoration-2 underline-offset-2"
+                                            >
+                                                {contrast.word2}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>
+                        )}
                     </div>
                     <Tooltip.Arrow className="fill-black" width={12} height={6} />
                 </Tooltip.Content>
