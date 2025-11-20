@@ -1,19 +1,41 @@
 {
-  "name": "turborepo-nextjs-wxt-shadcn-boilerplate",
-  "version": "1.0.0",
-  "private": true,
-  "license": "MIT",
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "check-types": "turbo run check-types"
-  },
-  "devDependencies": {
-    "turbo": "^2.4.4"
-  },
-  "packageManager": "pnpm@9.15.1",
-  "engines": {
-    "node": ">=18"
-  }
+    "name": "sounds-good",
+    "version": "1.0.0",
+    "type": "module",
+    "private": true,
+    "license": "MIT",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview",
+        "check-types": "tsc --noEmit",
+        "split-audio": "node split-audio.js"
+    },
+    "dependencies": {
+        "@radix-ui/react-slot": "^1.2.4",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "fabric": "^6.9.0",
+        "html2canvas": "^1.4.1",
+        "lucide-react": "^0.554.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "tailwind-merge": "^3.4.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.1.17",
+        "@types/node": "^24.10.1",
+        "@types/react": "^19.0.10",
+        "@types/react-dom": "^19.0.4",
+        "@vitejs/plugin-react": "^5.1.1",
+        "autoprefixer": "^10.4.20",
+        "postcss": "^8.5.3",
+        "tailwindcss": "^4.1.17",
+        "typescript": "^5.9.3",
+        "vite": "^7.2.4"
+    },
+    "packageManager": "pnpm@9.15.1",
+    "engines": {
+        "node": ">=18"
+    }
 }
