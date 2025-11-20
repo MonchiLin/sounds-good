@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@layer base {
+
+    html,
+    body {
+        cursor: url('/cursor.svg') 5 5, auto;
+    }
+
+    a,
+    button,
+    [role="button"],
+    .cursor-pointer,
+    input[type="checkbox"],
+    input[type="radio"],
+    select {
+        cursor: url('/cursor-pointer.svg') 5 5, pointer;
+    }
+
+    /* Ensure text cursor is preserved where appropriate, or maybe we want a custom text cursor too? 
+     For now let's leave text cursor as default or maybe auto if we want to force the arrow.
+     Usually text inputs should keep the text cursor. */
+    input[type="text"],
+    textarea,
+    [contenteditable="true"] {
+        cursor: text;
+    }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Tooltip from '@radix-ui/react-tooltip';
+import * as HoverCard from '@radix-ui/react-hover-card';
 import { PHONETIC_EXAMPLES } from '../data/phonetic-examples';
 import { PHONETIC_CONTRASTS } from '../data/phonetic-contrasts';
 import { Volume2 } from 'lucide-react';
@@ -29,12 +29,12 @@ export const PhoneticTooltip: React.FC<PhoneticTooltipProps> = ({ symbol, childr
     };
 
     return (
-        <Tooltip.Root>
-            <Tooltip.Trigger asChild>
+        <HoverCard.Root openDelay={200} closeDelay={300}>
+            <HoverCard.Trigger asChild>
                 {children}
-            </Tooltip.Trigger>
-            <Tooltip.Portal>
-                <Tooltip.Content
+            </HoverCard.Trigger>
+            <HoverCard.Portal>
+                <HoverCard.Content
                     className="z-50 bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] p-3 rounded-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2"
                     sideOffset={8}
                 >
@@ -112,9 +112,9 @@ export const PhoneticTooltip: React.FC<PhoneticTooltipProps> = ({ symbol, childr
                             </>
                         )}
                     </div>
-                    <Tooltip.Arrow className="fill-black" width={12} height={6} />
-                </Tooltip.Content>
-            </Tooltip.Portal>
-        </Tooltip.Root>
+                    <HoverCard.Arrow className="fill-black" width={12} height={6} />
+                </HoverCard.Content>
+            </HoverCard.Portal>
+        </HoverCard.Root>
     );
 };
