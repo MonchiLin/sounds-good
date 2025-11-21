@@ -63,21 +63,7 @@ export interface PracticeStats {
   bestStreak: number;
 }
 
-export interface PracticeModeContextType {
-  isPracticeMode: boolean;
-  difficulty: DifficultyLevel;
-  currentQuestion: PracticeQuestion | null;
-  stats: PracticeStats;
-  answerState: 'waiting' | 'correct' | 'wrong';
-  selectedAnswer: string | null;
-  startPractice: (difficulty: DifficultyLevel) => void;
-  stopPractice: () => void;
-  submitAnswer: (answer: string) => void;
-  nextQuestion: () => void;
-  playQuestionAudio: () => void;
-  historicalStats: HistoricalStats;
-  resetHistoricalStats: () => void;
-}
+
 
 // Historical statistics stored in localStorage
 export interface HistoricalStats {
@@ -86,4 +72,59 @@ export interface HistoricalStats {
   allTimeBestStreak: number;
   practiceCount: number; // Number of practice sessions
   lastPracticeDate: string | null;
+}
+
+// SRS (Spaced Repetition System) Types
+export interface ReviewStatus {
+  symbol: string;
+  level: number;       // 0-9
+  nextReview: number;  // Timestamp
+  lastReview: number;  // Timestamp
+  history: number[];   // History of ratings
+}
+
+export interface SRSData {
+  [symbol: string]: ReviewStatus;
+}
+
+export type SRSRating = 'again' | 'hard' | 'good' | 'easy';
+
+export interface FlashcardState {
+  currentCard: ReviewStatus | null;
+  isFlipped: boolean;
+  queue: ReviewStatus[];
+  sessionStats: {
+    reviewed: number;
+    newLearned: number;
+    ratings: { [key in SRSRating]: number };
+  };
+}
+
+export interface PracticeModeContextType {
+  isPracticeMode: boolean;
+  // Legacy/Compatibility props (can be deprecated or kept for "Free Mode")
+  difficulty: DifficultyLevel;
+  currentQuestion: PracticeQuestion | null;
+  stats: PracticeStats;
+  answerState: 'waiting' | 'correct' | 'wrong';
+  selectedAnswer: string | null;
+
+  // New SRS props
+  srsData: SRSData;
+  flashcardState: FlashcardState;
+
+  // Actions
+  startPractice: (difficulty?: DifficultyLevel) => void; // Modified signature
+  stopPractice: () => void;
+  submitAnswer: (answer: string) => void; // Legacy
+  nextQuestion: () => void; // Legacy
+  playQuestionAudio: () => void;
+
+  // SRS Actions
+  startSession: () => void;
+  flipCard: () => void;
+  rateCard: (rating: SRSRating) => void;
+
+  historicalStats: HistoricalStats;
+  resetHistoricalStats: () => void;
 }

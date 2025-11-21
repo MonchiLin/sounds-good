@@ -17,12 +17,97 @@
         cursor: url('/cursor-pointer.svg') 5 5, pointer;
     }
 
-    /* Ensure text cursor is preserved where appropriate, or maybe we want a custom text cursor too? 
-     For now let's leave text cursor as default or maybe auto if we want to force the arrow.
-     Usually text inputs should keep the text cursor. */
     input[type="text"],
     textarea,
     [contenteditable="true"] {
         cursor: text;
+    }
+}
+
+@layer utilities {
+    .perspective-1000 {
+        perspective: 1000px;
+    }
+
+    .transform-style-3d {
+        transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+        backface-visibility: hidden;
+    }
+
+    .rotate-y-180 {
+        transform: rotateY(180deg);
+    }
+
+    .bg-dot-pattern {
+        background-image: radial-gradient(#000000 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+
+    .animate-in {
+        animation-duration: 0.3s;
+        animation-fill-mode: both;
+    }
+
+    .fade-in {
+        animation-name: fadeIn;
+    }
+
+    .zoom-in {
+        animation-name: zoomIn;
+    }
+
+    .slide-in-from-right {
+        animation-name: slideInFromRight;
+    }
+
+    .animate-spin-slow {
+        animation: spin 8s linear infinite;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }
